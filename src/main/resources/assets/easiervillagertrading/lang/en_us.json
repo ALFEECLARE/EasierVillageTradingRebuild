@@ -1,0 +1,6 @@
+{
+    "easiervillagertrading.config.swapshift": "Make 'trade all' default",
+    "easiervillagertrading.config.tt.swapshift": "If false, use shift to trade all.\nIf true, normal click trades all, shift click trades once.",
+    "easiervillagertrading.config.ctrlshift": "Make 'trade Immediatry' default",
+    "easiervillagertrading.config.tt.ctrlshift": "If false, normal click to trade immediatory.\nIf true, normal click select trade, ctrl click trades immediatory."
+}
