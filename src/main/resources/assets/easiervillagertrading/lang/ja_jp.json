@@ -1,0 +1,6 @@
+{
+    "easiervillagertrading.config.swapshift": "『限界まで取引』をデフォルトにします",
+    "easiervillagertrading.config.tt.swapshift": "falseにすると、SHIFTを押している間だけ限界まで取引を行います。\ntrueにすると、通常クリックで限界まで取引、SHIFTを押している間だけ限界まで取引します。",
+    "easiervillagertrading.config.ctrlshift": "『取引を選択』をデフォルトにします",
+    "easiervillagertrading.config.tt.ctrlshift": "falseにすると、通常クリックで即座に取引します。\ntrueにすると、通常クリックで取引を選択、, ctrl click trades immediatory."
+}

@@ -28,12 +28,10 @@ public class ConfigData {
         public final ForgeConfigSpec.BooleanValue ctrlSwapped;
 
         ClientConfig(ForgeConfigSpec.Builder builder) {
-
             builder.push("general");
             shiftSwapped = builder.comment("Make 'trade all' default").translation("easiervillagertrading.config.tt.swapshift").define("shiftSwapped", false);
             ctrlSwapped = builder.comment("Make 'trade Immediatry' default").translation("easiervillagertrading.config.tt.ctrlshift").define("ctrlSwapped", false);
             builder.pop();
-
         }
     }
 }
