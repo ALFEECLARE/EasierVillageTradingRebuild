@@ -27,7 +27,7 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
     @Override
     public void postButtonClick() {
         super.postButtonClick();
-        if (Screen.hasControlDown() == ConfigData.ctrlSwapped) {
+        if (Screen.hasControlDown() != ConfigData.ctrlSwapped) {
             return;
         }
         this.slotClicked(null, 0, 0, ClickType.QUICK_MOVE);
