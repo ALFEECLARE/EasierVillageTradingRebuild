@@ -27,7 +27,7 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
     @Override
     public void postButtonClick() {
         super.postButtonClick();
-        if (Screen.hasControlDown() == ConfigData.ctrlSwapped) {
+        if (Screen.hasControlDown() != ConfigData.ctrlSwapped) {
             return;
         }
         this.slotClicked(null, 0, 0, ClickType.QUICK_MOVE);
@@ -166,7 +166,7 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
             return false;
         if (a.getItem() == b.getItem()
                 && (!a.isDamageableItem() || a.getDamageValue() == b.getDamageValue())
-                && ItemStack.tagMatches(a, b))
+                && ItemStack.isSameItemSameTags(a, b))
             return true;
         return false;
     }
