@@ -156,6 +156,22 @@ jar {
         ])
     }
 }
+/**
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            MINECRAFT_VERSION: MINECRAFT_VERSION, MINECRAFT_VERSION_RANGE: MINECRAFT_VERSION_RANGE,
+            FORGE_VERSION: FORGE_VERSION, FORGE_VERSION_RANGE: FORGE_VERSION_RANGE,
+            LOADER_VERSION_RANGE: LOADER_VERSION_RANGE,
+            MOD_ID: MOD_ID, MOD_NAME: MOD_NAME, MOD_LICENCE: MOD_LICENCE, MOD_VERSION: MOD_VERSION,
+            AUTHOR_NAME: AUTHOR_NAME, DESCTIPTION_TEXT: DESCTIPTION_TEXT,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+*/
 
 // Example configuration to allow publishing using the maven-publish plugin
 // This is the preferred method to reobfuscate your jar file
