@@ -18,7 +18,7 @@ public class ConfigData {
     }
 
     public static void refreshClient() {
-        ctrlSwapped = CLIENT.shiftSwapped.get();
+        ctrlSwapped = CLIENT.ctrlSwapped.get();
         shiftSwapped = CLIENT.shiftSwapped.get();
     }
 
