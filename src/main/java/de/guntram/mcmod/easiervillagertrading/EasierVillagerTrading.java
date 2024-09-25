@@ -26,8 +26,10 @@ public class EasierVillagerTrading {
     }
 
     public void modConfig(ModConfigEvent event) {
+    	EasierVillagerTrading.log("event start");
         if (event.getConfig().getSpec() == ConfigData.CLIENT_SPEC)
             ConfigData.refreshClient();
+    	EasierVillagerTrading.log("event finished");
     }
 
     public static void log(String message) {
