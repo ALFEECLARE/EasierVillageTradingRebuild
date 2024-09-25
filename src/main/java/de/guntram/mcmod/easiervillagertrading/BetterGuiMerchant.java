@@ -5,10 +5,14 @@
  */
 package de.guntram.mcmod.easiervillagertrading;
 
+import java.util.List;
+
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +42,6 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
 
     @Override
     public void trade(int tradeIndex) {
-
         MerchantOffers trades = menu.getOffers();
         MerchantOffer recipe = trades.get(tradeIndex);
         int safeguard = 0;
@@ -81,8 +84,9 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
                 //System.out.println("taking "+invstack.getCount()+" items from slot # "+i);
                 remaining -= invstack.getCount();
             }
-            if (remaining <= 0)
+            if (remaining <= 0) {
                 return true;
+            }
         }
         return false;
     }
@@ -166,9 +170,40 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
             return false;
         if (a.getItem() == b.getItem()
                 && (!a.isDamageableItem() || a.getDamageValue() == b.getDamageValue())
-                && ItemStack.isSameItemSameTags(a, b))
+                && isSameItemAndComponents(a, b))
             return true;
         return false;
+    }
+    
+    //VanillaではFoodPropetiesの効果部分の同一判定でeffectSupplierのID比較しか行っていないので、マルチで別バージョンのクライアントを使用すると一致するはずが不一致になる。(例：フグ)
+    //FoodProertiesの中身を見て確認
+    public boolean isSameItemAndComponents(ItemStack item1, ItemStack item2) {
+    	if (ItemStack.isSameItemSameComponents(item1, item2)) {
+    		return true;
+    	}
+		//アイテムの同一性は確認済みなので、FoodPropertiesは片方だけ見ればよい
+    	if (!ItemStack.isSameItem(item1, item2) || item1.getFoodProperties(null) == null
+    			|| !item1.getDisplayName().getString().equals(item2.getDisplayName().getString())
+    			|| !item1.getDescriptionId().equals(item2.getDescriptionId())) {
+    		return false;
+    	}
+    	FoodProperties foodProp1 = item1.getFoodProperties(null);
+    	FoodProperties foodProp2 = item2.getFoodProperties(null);
+        if (foodProp1.nutrition() != foodProp2.nutrition() || foodProp1.saturation() != foodProp2.saturation()
+        		|| foodProp1.canAlwaysEat() != foodProp2.canAlwaysEat() || foodProp1.eatSeconds() != foodProp2.eatSeconds()) {
+        	return false;
+        }
+    	List<PossibleEffect> effects1 = foodProp1.effects();
+    	List<PossibleEffect> effects2 = foodProp2.effects();
+    	if (effects1.size() != effects2.size()) {
+    		return false;
+    	}
+    	for  (PossibleEffect effect : effects1) {
+    		if (effects2.contains(effect)) {
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     private void getslot(int slot, ItemStack stack, int... forbidden) {
