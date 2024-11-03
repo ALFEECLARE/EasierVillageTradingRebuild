@@ -14,7 +14,7 @@ import net.neoforged.neoforge.common.NeoForge;
 @Mod(EasierVillagerTrading.MODID)
 public class EasierVillagerTrading {
 
-    public static final String MODID = "easiervillagertrading";
+    public static final String MODID = "easiervillagertradingrebuild";
     private static final Logger log = LogManager.getLogger(MODID);
 
     public EasierVillagerTrading(IEventBus modEventBus, ModContainer modContainer) {
