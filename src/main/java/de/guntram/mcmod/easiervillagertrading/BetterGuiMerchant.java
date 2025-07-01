@@ -9,13 +9,15 @@ import java.util.List;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 
@@ -182,23 +184,28 @@ public class BetterGuiMerchant extends MerchantScreen implements AutoTrade {
     		return true;
     	}
 		//アイテムの同一性は確認済みなので、FoodPropertiesは片方だけ見ればよい
-    	if (!ItemStack.isSameItem(item1, item2) || item1.getFoodProperties(null) == null
+    	if (!ItemStack.isSameItem(item1, item2) || item1.getComponents().get(DataComponents.FOOD) == null
     			|| !item1.getDisplayName().getString().equals(item2.getDisplayName().getString())
-    			|| !item1.getDescriptionId().equals(item2.getDescriptionId())) {
+    			|| !item1.getItemName().getString().equals(item2.getItemName().getString())) {
     		return false;
     	}
-    	FoodProperties foodProp1 = item1.getFoodProperties(null);
-    	FoodProperties foodProp2 = item2.getFoodProperties(null);
+    	FoodProperties foodProp1 = item1.getComponents().get(DataComponents.FOOD);
+    	FoodProperties foodProp2 = item2.getComponents().get(DataComponents.FOOD);
         if (foodProp1.nutrition() != foodProp2.nutrition() || foodProp1.saturation() != foodProp2.saturation()
-        		|| foodProp1.canAlwaysEat() != foodProp2.canAlwaysEat() || foodProp1.eatSeconds() != foodProp2.eatSeconds()) {
+        		|| foodProp1.canAlwaysEat() != foodProp2.canAlwaysEat()) {
         	return false;
         }
-    	List<PossibleEffect> effects1 = foodProp1.effects();
-    	List<PossibleEffect> effects2 = foodProp2.effects();
+        Consumable consumeProp1 = item1.get(DataComponents.CONSUMABLE);
+        Consumable consumeProp2 = item2.get(DataComponents.CONSUMABLE);
+        if (consumeProp1.consumeTicks() != consumeProp2.consumeTicks()) {
+        	return false;
+        }
+    	List<ConsumeEffect> effects1 = consumeProp1.onConsumeEffects();
+    	List<ConsumeEffect> effects2 = consumeProp2.onConsumeEffects();
     	if (effects1.size() != effects2.size()) {
     		return false;
     	}
-    	for  (PossibleEffect effect : effects1) {
+    	for  (ConsumeEffect effect : effects1) {
     		if (effects2.contains(effect)) {
     			return false;
     		}

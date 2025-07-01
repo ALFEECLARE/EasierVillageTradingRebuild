@@ -32,7 +32,7 @@ public class EasierVillagerTrading {
     	EasierVillagerTrading.log("event finished");
     }
 
-    public static void log(String message) {
+    private static void log(String message) {
     	if (log == null)
     		return;
     	log.info("[{}] {}", log.getName(), message);
